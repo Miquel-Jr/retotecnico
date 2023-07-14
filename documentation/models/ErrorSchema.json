@@ -1,0 +1,16 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "properties": {
+      "success": {
+        "enum": [false],
+        "type": "boolean"
+        
+      },
+      "message": {
+        "description": "Mensaje de error",
+        "type": "string"
+      }
+    },
+    "type": "object"
+  }
+  

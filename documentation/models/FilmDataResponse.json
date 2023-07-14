@@ -1,0 +1,78 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "properties": {
+      "titulo": {
+        "description": "Titulo de la pelicula",
+        "type": "string"
+      },
+      "id_episodio": {
+        "description": "Id de la pelicula",
+        "type": "number"
+      },
+      "rastreo_de_apertura": {
+        "description": "Rastreo de apertura de la pelicula",
+        "type": "string"
+      },
+      "director": {
+        "description": "Director de la pelicula",
+        "type": "string"
+      },
+      "fecha_lanzamiento": {
+        "description": "Fecha de lanzamiento de la pelicula",
+        "type": "string"
+      },
+      "caracteres": {
+        "description": "Array de Caracteres de la pelicula",
+        "items": {
+            "description": "Endpoints de Caracteres",
+            "type": "string"
+        },
+        "type": "array"
+      },
+      "planetas": {
+        "description": "Array de Planetas de la pelicula",
+        "items": {
+            "description": "Endpoints de Planetas",
+            "type": "string"
+        },
+        "type": "array"
+      },
+      "naves_estelares": {
+        "description": "Array de Naves estelares de la pelicula",
+        "items": {
+            "description": "Endpoints de naves estelares",
+            "type": "string"
+        },
+        "type": "array"
+      },
+      "vehiculos": {
+        "description": "Array de Vehiculos de la pelicula",
+        "items": {
+            "description": "Endpoints de Vehiculos",
+            "type": "string"
+        },
+        "type": "array"
+      },
+      "especies": {
+        "description": "Array de Especies de la pelicula",
+        "items": {
+            "description": "Endpoints de Especies",
+            "type": "string"
+        },
+        "type": "array"
+      },
+      "creado": {
+        "description": "Creacion de la pelicula",
+        "type": "string"
+      },
+      "editado": {
+        "description": "Actualizacion de la pelicula",
+        "type": "string"
+      },
+      "direccion": {
+        "description": "Direccion url de la pelicula",
+        "type": "string"
+      }
+    },
+    "type": "object"
+  }

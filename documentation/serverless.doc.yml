@@ -1,0 +1,35 @@
+documentation:
+  Api:
+    info:
+      version: '1'
+      title: 'retotecnico'
+      description: 'Funciones Lambda asociados al endpoint'
+  models:
+    - name: 'ErrorSchema'
+      description: 'Esquema de error'
+      contentType: 'application/json'
+      schema: ${file(documentation/models/ErrorSchema.json)}
+    - name: 'SuccessSchema'
+      description: 'Esquema de exitos'
+      contentType: 'application/json'
+      schema: ${file(documentation/models/SuccessSchema.json)}
+    - name: 'FilmDataResponse'
+      description: 'Esquema de datos de la pelicula'
+      contentType: 'application/json'
+      schema: ${file(documentation/models/FilmDataResponse.json)}
+    - name: 'PlanetDataResponse'
+      description: 'Esquema de datos del planeta'
+      contentType: 'application/json'
+      schema: ${file(documentation/models/PlanetDataResponse.json)}
+    - name: 'VehicleDataRequest'
+      description: 'Esquema de datos de Vehiculo'
+      contentType: 'application/json'
+      schema: ${file(documentation/models/VehicleDataRequest.json)}
+    - name: 'VehicleDataResponse'
+      description: 'Reporte de Vehiculos'
+      contentType: 'application/json'
+      schema: ${file(documentation/models/VehicleDataResponse.json)}
+    - name: 'VehicleIDRequest'
+      description: 'ID de Vehiculo'
+      contentType: 'application/json'
+      schema: ${file(documentation/models/VehicleIDRequest.json)}
