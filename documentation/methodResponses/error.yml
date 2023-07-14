@@ -1,0 +1,18 @@
+http400:
+  statusCode: '400'
+  responseBody:
+    description: 'BAD SERVER'
+  responseModels:
+    application/json: 'ErrorSchema'
+http401:
+  statusCode: '401'
+  responseBody:
+    description: 'UNAUTHORIZED 401'
+  responseModels:
+    application/json: 'ErrorSchema'
+http520:
+  statusCode: '520'
+  responseBody:
+    description: 'NOT PERMISSION'
+  responseModels:
+    application/json: 'ErrorSchema'

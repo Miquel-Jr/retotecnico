@@ -1,0 +1,62 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "properties": {
+      "nombre": {
+        "description": "Nombre del planeta",
+        "type": "string"
+      },
+      "periodo_de_rotacion": {
+        "description": "Periodo de rotacion del planeta",
+        "type": "string"
+      },
+      "periodo_orbital": {
+        "description": "Periodo orbital del planeta",
+        "type": "string"
+      },
+      "diametro": {
+        "description": "Diametro del planeta",
+        "type": "string"
+      },
+      "clima": {
+        "description": "Clima del planeta",
+        "type": "string"
+      },
+      "gravedad": {
+        "description": "Gravedad del planeta",
+        "type": "string"
+      },
+      "terreno": {
+        "description": "Terreno del planeta",
+        "type": "string"
+      },
+      "superficie_del_agua": {
+        "description": "Superficie del agua del planeta",
+        "type": "string"
+      },
+      "poblacion": {
+        "description": "Poblacion del planeta",
+        "type": "string"
+      },
+      "especies": {
+        "description": "Array de Especies de la pelicula",        
+        "items": {
+            "description": "Endpoints de Especies",
+            "type": "string"
+        },
+        "type": "array"
+      },
+      "creado": {
+        "description": "Creacion de la pelicula",
+        "type": "string"
+      },
+      "editado": {
+        "description": "Actualizacion de la pelicula",
+        "type": "string"
+      },
+      "direccion": {
+        "description": "Direccion url de la pelicula",
+        "type": "string"
+      }
+    },
+    "type": "object"
+  }

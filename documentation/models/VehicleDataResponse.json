@@ -1,0 +1,41 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "data": {
+          "properties": {
+            "ID": {
+                "description": "ID del vehiculo",
+                "type": "number"
+            },
+            "placa": {
+                "description": "Placa del vehiculo",
+                "type": "string"
+            },
+            "color": {
+                "description": "Color del vehiculo",
+                "type": "string"
+            },
+            "VehicleStatus": {
+                "description": "Estado del vehiculo",
+                "enum": ["ACTIVE", "INACTIVE", "NOT_FOUND", "PENDING", "SUSPENDED"],
+                "type": "string"
+            },
+            "creationDate": {
+                "description": "Almacenamiento basico de fechas y horas.",
+                "format": "date-time",
+                "type": "string"
+            }
+          },
+          "type": "object"
+        }
+    },
+    "properties": {
+        "data": {
+          "items": {
+            "$ref": "#/definitions/data"
+          },
+          "type": "array"
+        }
+      },
+    "type": "object"
+  }

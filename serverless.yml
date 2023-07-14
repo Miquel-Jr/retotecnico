@@ -1,0 +1,170 @@
+service: retotecnico
+
+custom:
+  prune:
+    automatic: true
+    number: 3
+  region: us-east-1
+  accountId: { 'Fn::Join': ['', [{ 'Ref': 'AWS::AccountId' }]] }
+  # webpack:
+  #   webpackConfig: ../../webpack.config.ts
+  #   packager: yarn
+  #   includeModules:
+  #     forceExclude:
+  #       - aws-sdk
+  documentation: ${file(documentation/serverless.doc.yml):documentation}
+  database:
+    vehicle: ${self:provider.stage}-${self:service}-vehicle
+plugins:
+  # - serverless-webpack
+  - serverless-offline
+  - serverless-aws-documentation
+  - serverless-openapi-documentation
+  - serverless-cloudformation-sub-variables
+provider:
+  name: aws
+  region: us-east-1
+  runtime: nodejs14.x
+  stage: ${opt:stage, 'dev'}
+  stackTags:
+    service: ${self:service}
+    stage: ${self:provider.stage}
+  timeout: 30
+  memorySize: 256
+  endpointType: REGIONAL
+  resourcePolicy:
+    - Effect: Allow
+      Principal: '*'
+      Action: execute-api:Invoke
+      Resource:
+        - execute-api:/*/*/*
+  environment:
+    TABLE_VEHICLE: ${self:custom.database.vehicle}
+  tracing:
+    lambda: true
+    apiGateway: true
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - lambda:InvokeFunction
+      Resource:
+        - '*'
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - '*'
+
+functions:
+  getFilms:
+    handler: src/handler.films
+    events:
+      - http:
+          path: /films/get/
+          method: get
+          cors: true
+          documentation:
+            summary: 'Consultar Pelicula'
+            description: 'Consultar informacion de la pelicula'
+            methodResponses:
+              - statusCode: '200'
+                responseBody:
+                  description: 'Response FilmData'
+                responseModels:
+                  application/json: 'FilmDataResponse'
+              - ${file(documentation/methodResponses/error.yml):http400}
+  getPlanets:
+    handler: src/handler.planets
+    events:
+      - http:
+          path: /planets/get/
+          method: get
+          cors: true
+          documentation:
+            summary: 'Consultar Planeta'
+            description: 'Consultar informacion del planeta'
+            methodResponses:
+              - statusCode: '200'
+                responseBody:
+                  description: 'Response PlanetData'
+                responseModels:
+                  application/json: 'PlanetDataResponse'
+              - ${file(documentation/methodResponses/error.yml):http400}
+  getVehicle:
+    handler: src/handler.vehicleAll
+    events:
+      - http:
+          path: /vehicle/all/
+          method: get
+          cors: true
+          documentation:
+            summary: 'Consultar vehiculo'
+            description: 'Consultar vehiculo'
+            methodResponses:
+              - statusCode: '200'
+                responseBody:
+                  description: 'Response VehicleData'
+                responseModels:
+                  application/json: 'VehicleDataResponse'
+              - ${file(documentation/methodResponses/error.yml):http400}
+  postVehicleID:
+    handler: src/handler.vehicleID
+    events:
+      - http:
+          path: /vehicle/ID/
+          method: post
+          cors: true
+          documentation:
+            summary: 'Buscar vehiculo'
+            description: 'Buscar vehiculo'
+            requestBody:
+              description: 'Request VehicleID'
+            requestModels:
+              application/json: 'VehicleIDRequest'
+            methodResponses:
+              - statusCode: '200'
+                responseBody:
+                  description: 'Response VehicleData'
+                responseModels:
+                  application/json: 'VehicleDataRequest'
+              - ${file(documentation/methodResponses/error.yml):http400}
+  postRegisterVehicle:
+    handler: src/handler.vehicleRegister
+    events:
+      - http:
+          path: /vehicle/register/
+          method: post
+          cors: true
+          documentation:
+            summary: 'Registrar vehiculo'
+            description: 'Registrar vehiculo'
+            requestBody:
+              description: 'Request VehicleData'
+            requestModels:
+              application/json: 'VehicleDataRequest'
+            methodResponses:
+              - statusCode: '200'
+                responseBody:
+                  description: 'Response Success'
+                responseModels:
+                  application/json: 'SuccessSchema'
+              - ${file(documentation/methodResponses/error.yml):http400}
+
+resources:
+  Resources:
+    VehicleTable:
+      Type: AWS::DynamoDB::Table #Valor fijo del tipo de tabla
+      Properties:
+        TableName: ${self:custom.database.vehicle} #Nombre de la tabla, referencia a la variable custom
+        AttributeDefinitions: # Seccion de campos
+          - AttributeName: ID  #Nombre del campo
+            AttributeType: N  # Tipo de campo, puede ser S=String, N=Number y B=Binario
+        KeySchema: # Sección de la llave primaria de la tabla
+          - AttributeName: ID #Nombre del campo, solo se pueden usar nombres de la seccion AttributeDefinitions
+            KeyType: HASH # Tipo de llave HASH = Partition Key, sera la llave para realizar busquedas
+        BillingMode: PAY_PER_REQUEST
