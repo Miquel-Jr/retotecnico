@@ -1,0 +1,21 @@
+{
+    "Table": {
+        "TableName": "dev-retotecnico-vehicle",
+        "KeySchema": [
+            {
+                "AttributeName": "ID",
+                "KeyType": "HASH"
+            }
+        ],
+        "AttributeDefinitions": [
+            {
+                "AttributeName": "ID",
+                "AttributeType": "N"
+            }
+        ],
+        "ProvisionedThoughput": {
+            "ReadCapacityUnits": 1,
+            "WriteCapacityUnits": 1
+        }
+    }
+}

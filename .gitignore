@@ -2,8 +2,14 @@
 node_modules
 jspm_packages
 
+# dynamodb local
+.dynamodb
+
 # Serverless directories
 .serverless
 
 # yarn.lock
 yarn.lock
+
+#swagger
+swagger

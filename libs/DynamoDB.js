@@ -1,6 +1,21 @@
 const AWS = require('aws-sdk');
 
 let options = {};
+const isOffline = process.env.IS_OFFLINE
+if (isOffline) {
+    options = {
+        region: 'localhost',
+        endpoint: 'http://localhost:8000',
+    };
+}
+const isTest = process.env.JEST_WORKER_ID;
+if (isTest) {
+    options = {
+        endpoint: 'http://localhost:8000',
+        region: 'local-env',
+        sslEnabled: false,
+    };
+}
 
 const documentClient = new AWS.DynamoDB.DocumentClient(options);
 
