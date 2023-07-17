@@ -8,8 +8,11 @@ jspm_packages
 # Serverless directories
 .serverless
 
-# yarn.lock
+# webpack directories
+.webpack
+
+# yarn.lock file
 yarn.lock
 
-#swagger
+#swagger directories
 swagger
