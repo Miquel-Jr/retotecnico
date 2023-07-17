@@ -6,17 +6,30 @@ custom:
     number: 3
   region: us-east-1
   accountId: { 'Fn::Join': ['', [{ 'Ref': 'AWS::AccountId' }]] }
-  # webpack:
-  #   webpackConfig: ../../webpack.config.ts
-  #   packager: yarn
-  #   includeModules:
-  #     forceExclude:
-  #       - aws-sdk
+  serverless-dynamodb:
+    stages:
+      - dev
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+    migration:
+      dir: offline/migrations
   documentation: ${file(documentation/serverless.doc.yml):documentation}
   database:
     vehicle: ${self:provider.stage}-${self:service}-vehicle
+  autoswagger:
+    useStage: true
+    generateSwaggerOnDeploy: true
+    typefiles: './src/types/flights.d.ts'
+    basePath: /${self:provider.stage}
+    schemes: 
+      - 'http'
+      - 'https'
 plugins:
-  # - serverless-webpack
+  - serverless-auto-swagger
+  - serverless-webpack
+  - serverless-dynamodb
   - serverless-offline
   - serverless-aws-documentation
   - serverless-openapi-documentation
@@ -51,18 +64,16 @@ provider:
         - '*'
     - Effect: Allow
       Action:
-        - dynamodb:Query
-        - dynamodb:Scan
-        - dynamodb:GetItem
-        - dynamodb:PutItem
-        - dynamodb:UpdateItem
-        - dynamodb:DeleteItem
+        - dynamodb:*
       Resource:
         - '*'
 
+package:
+  individually: true
+
 functions:
   getFilms:
-    handler: src/handler.films
+    handler: src/functions/handler.films
     events:
       - http:
           path: /films/get/
@@ -79,7 +90,7 @@ functions:
                   application/json: 'FilmDataResponse'
               - ${file(documentation/methodResponses/error.yml):http400}
   getPlanets:
-    handler: src/handler.planets
+    handler: src/functions/handler.planets
     events:
       - http:
           path: /planets/get/
@@ -96,7 +107,7 @@ functions:
                   application/json: 'PlanetDataResponse'
               - ${file(documentation/methodResponses/error.yml):http400}
   getVehicle:
-    handler: src/handler.vehicleAll
+    handler: src/functions/handler.vehicleAll
     events:
       - http:
           path: /vehicle/all/
@@ -113,12 +124,14 @@ functions:
                   application/json: 'VehicleDataResponse'
               - ${file(documentation/methodResponses/error.yml):http400}
   postVehicleID:
-    handler: src/handler.vehicleID
+    handler: src/functions/handler.vehicleID
     events:
       - http:
           path: /vehicle/ID/
           method: post
           cors: true
+          bodyType: 'VehicleIDRequest'
+          responseType: 'VehicleDataRequest'
           documentation:
             summary: 'Buscar vehiculo'
             description: 'Buscar vehiculo'
@@ -134,12 +147,13 @@ functions:
                   application/json: 'VehicleDataRequest'
               - ${file(documentation/methodResponses/error.yml):http400}
   postRegisterVehicle:
-    handler: src/handler.vehicleRegister
+    handler: src/functions/handler.vehicleRegister
     events:
       - http:
           path: /vehicle/register/
           method: post
           cors: true
+          bodyType: VehicleDataRequest
           documentation:
             summary: 'Registrar vehiculo'
             description: 'Registrar vehiculo'
@@ -157,6 +171,7 @@ functions:
 
 resources:
   Resources:
+    # Creacion de tabla dynamodb
     VehicleTable:
       Type: AWS::DynamoDB::Table #Valor fijo del tipo de tabla
       Properties:
