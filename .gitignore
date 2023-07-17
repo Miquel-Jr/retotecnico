@@ -3,13 +3,13 @@ node_modules
 jspm_packages
 
 # dynamodb local
-.dynamodb
+.dynamodb/*
 
 # Serverless directories
 .serverless
 
 # webpack directories
-.webpack
+.webpack/*
 
 # yarn.lock file
 yarn.lock
